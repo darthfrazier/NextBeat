@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7026532C1A17D3200044A132 /* SongTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7026532B1A17D3200044A132 /* SongTableViewCell.swift */; };
 		704E6CA41A16FB8500805A77 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 704E6CA31A16FB8500805A77 /* SystemConfiguration.framework */; };
 		704E6CAF1A16FBAD00805A77 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 704E6CA51A16FBAD00805A77 /* StoreKit.framework */; };
 		704E6CB01A16FBAD00805A77 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 704E6CA61A16FBAD00805A77 /* Security.framework */; };
@@ -41,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7026532B1A17D3200044A132 /* SongTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongTableViewCell.swift; sourceTree = "<group>"; };
 		704E6CA31A16FB8500805A77 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		704E6CA51A16FBAD00805A77 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		704E6CA61A16FBAD00805A77 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -142,6 +144,7 @@
 				BD5392531A09818D00CDAE59 /* speakers.png */,
 				BD5392331A09816A00CDAE59 /* AppDelegate.swift */,
 				BD5392371A09816A00CDAE59 /* Main.storyboard */,
+				7026532B1A17D3200044A132 /* SongTableViewCell.swift */,
 				70E304FD1A1749B40029AB45 /* EventsTableViewCell.swift */,
 				BD32F2BF1A0F2C4F0033D766 /* NewEventViewController.swift */,
 				BD53923A1A09816A00CDAE59 /* Images.xcassets */,
@@ -281,6 +284,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7026532C1A17D3200044A132 /* SongTableViewCell.swift in Sources */,
 				70E304FE1A1749B40029AB45 /* EventsTableViewCell.swift in Sources */,
 				70E304FC1A1748520029AB45 /* ViewEventsTableViewController.swift in Sources */,
 				BD32F2C01A0F2C4F0033D766 /* NewEventViewController.swift in Sources */,
