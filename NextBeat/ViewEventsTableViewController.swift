@@ -11,11 +11,32 @@ import UIKit
 class ViewEventsTableViewController: UITableViewController {
 
     var timelineData:NSMutableArray! = NSMutableArray()
-    
+    var userlocation: PFGeoPoint?
+    let locationManger:CLLocationManager = CLLocationManager()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
-               // Uncomment the following line to preserve selection between presentations
+        locationManger.desiredAccuracy = kCLLocationAccuracyBest
+        let authstate = CLLocationManager.authorizationStatus()
+        if(authstate == CLAuthorizationStatus.NotDetermined){
+            println("Not Authorised")
+            locationManger.requestWhenInUseAuthorization()
+        }
+        PFGeoPoint.geoPointForCurrentLocationInBackground() {
+            (point:PFGeoPoint!, error:NSError!) -> Void in
+            if point != nil {
+                            // Succeeding in getting current location
+                println("fuck")
+                self.userlocation = point
+            }
+            else {
+                            // Failed to get location
+                println("Failed to get current location") // never printed
+            }
+        }
+
+        // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
@@ -30,7 +51,7 @@ class ViewEventsTableViewController: UITableViewController {
         timelineData.removeAllObjects()
         
         var findTimelineData:PFQuery = PFQuery(className: "Events")
-        
+        findTimelineData.whereKey("eventlocation", nearGeoPoint: userlocation, withinMiles:1.0)
         findTimelineData.findObjectsInBackgroundWithBlock{
             (objects:[AnyObject]!, error:NSError!)->Void in
             
@@ -39,10 +60,7 @@ class ViewEventsTableViewController: UITableViewController {
                     let event:PFObject = object as PFObject
                     self.timelineData.addObject(event)
                 }
-                
-                let array:NSArray = self.timelineData.reverseObjectEnumerator().allObjects
-                self.timelineData = NSMutableArray(array: array)
-                
+
                 self.tableView.reloadData()
                 
             }
@@ -94,6 +112,7 @@ class ViewEventsTableViewController: UITableViewController {
         
         return cell
     }
+   
 
 
     /*
@@ -131,14 +150,26 @@ class ViewEventsTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+   // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        if segue.identifier == "EventSongs"
+        {
+            let cell = sender as EventsTableViewCell
+            let eventname = cell.EventName.text
+            var destinationViewController:ViewSongsTableViewController = segue.destinationViewController as ViewSongsTableViewController
+            destinationViewController.eventname = eventname
+        }
+        
+            
+        }
+        
         // Get the new view controller using [segue destinationViewController].
         // Pass the selected object to the new view controller.
-    }
-    */
-
+    
+    
+    
 }

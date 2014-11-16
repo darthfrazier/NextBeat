@@ -9,6 +9,11 @@
 import UIKit
 
 class SongTableViewCell: UITableViewCell {
+    @IBOutlet weak var SongTitle: UILabel!
+    @IBOutlet weak var ArtistName: UILabel!
+    @IBOutlet weak var VoteCount: UILabel!
+    @IBOutlet weak var DownVote: UIButton!
+    @IBOutlet weak var UpVote: UIButton!
     
     
     

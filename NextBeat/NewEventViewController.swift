@@ -8,17 +8,41 @@
 
 import UIKit
 
-class NewEventViewController: UIViewController {
+class NewEventViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var EventName: UITextField!
     @IBOutlet weak var AdminPassword: UITextField!
     @IBOutlet weak var EventDescription: UITextField!
     @IBOutlet weak var EventPassword: UITextField!
     
+    //EventName.delegate = self
+    //AdminPassword.delegate = self
+    
+    
+
+    let locationManger:CLLocationManager = CLLocationManager()
+    var userlocation:PFGeoPoint?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        locationManger.desiredAccuracy = kCLLocationAccuracyBest
+        let authstate = CLLocationManager.authorizationStatus()
+        if(authstate == CLAuthorizationStatus.NotDetermined){
+            println("Not Authorised")
+            locationManger.requestWhenInUseAuthorization()
+        }
+        PFGeoPoint.geoPointForCurrentLocationInBackground() {
+            (point:PFGeoPoint!, error:NSError!) -> Void in
+            if point != nil {
+                            // Succeeding in getting current location
+                println("fuck")
+                self.userlocation = point
+            }
+            else {
+                            // Failed to get location
+                println("Failed to get current location") // never printed
+            }
+        }
         // Do any additional setup after loading the view.
     }
     
@@ -36,6 +60,9 @@ class NewEventViewController: UIViewController {
         event["eventname"] = EventName.text
         event["adminpassword"] = AdminPassword.text
         event["eventdescription"] = EventDescription.text
+        event["userID"] = UIDevice.currentDevice().identifierForVendor.UUIDString
+        event["eventlocation"] = userlocation
+
         if (EventPassword.text.isEmpty == false) {
             event["eventpassword"] = EventPassword.text
         }
@@ -45,6 +72,15 @@ class NewEventViewController: UIViewController {
         event.saveInBackground()
         
         self.navigationController?.popToRootViewControllerAnimated(true)
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true;
+    }
+    
+    override func touchesBegan(touches:NSSet, withEvent event: UIEvent) {
+        self.view.endEditing(true)
     }
 
     /*
