@@ -117,7 +117,7 @@ class ViewSongsTableViewController: UITableViewController {
         return cell
 
     }
-   @IBAction func UpVote(sender: AnyObject) {
+   /*@IBAction func UpVote(sender: AnyObject) {
         var UpVote:PFQuery = PFQuery(className: "Songs")
         let cell = sender as SongTableViewCell
         var songname = cell.SongTitle.text
@@ -176,7 +176,7 @@ class ViewSongsTableViewController: UITableViewController {
             let hiddenId = cell.SongId.text
             var destinationViewController:NewSongViewController = segue.destinationViewController as NewSongViewController
             destinationViewController.eventname = eventname?
-            destinationViewController.hiddenId = hiddenId
+            
         }
 
     
