@@ -11,7 +11,7 @@ import UIKit
 class EventsTableViewCell: UITableViewCell {
     @IBOutlet var EventName: UILabel! = UILabel()
     @IBOutlet var EventDescription: UITextView! = UITextView()
-    
+    @IBOutlet var ObjectID: UILabel! = UILabel()
     
     override func awakeFromNib() {
         super.awakeFromNib()

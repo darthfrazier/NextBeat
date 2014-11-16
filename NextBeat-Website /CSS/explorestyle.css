@@ -1,0 +1,223 @@
+
+html, body, #map-canvas {
+    height: 100%;
+    margin: 0px;
+    padding: 0px
+}
+
+
+#overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background-color: black;
+    opacity:1;
+}
+
+#waiting{
+    font-size:2em;
+    color:lightgrey;
+    text-align: center;
+    width:300px;
+    position:absolute;
+    left:50%;
+    margin-left:-150px;
+    top:25vh;
+    z-index:11;
+}
+#allEvents {
+    box-shadow: 0 1px 5px #191901;
+    padding:10px;
+    border-radius:5px;
+    z-index:100;
+    max-height:650px;
+    width:350px;
+    position:absolute;
+    top:10%;
+    right:25px;
+    background:none;
+    overflow: scroll;
+}
+.goTo {
+    margin-top:25px;
+    text-align: center;
+    border-radius:5px;
+    padding:5px;
+    width:100px;
+    background: #3ACC4C;
+    color:white;
+}
+.goTo:hover {
+    background:#298F35;
+}
+.someEvent {
+    box-shadow: 0 1px 5px #191901;
+    width:325px;
+    margin:0 auto;
+    cursor:pointer;
+    background:#F2F2F2;
+    padding:10px;
+    border-radius:5px;
+    word-wrap:break-word;
+    margin-bottom:5px;
+}
+.eTitle {
+    padding-right:0.8em;
+    position: relative;
+    font-size:1.5em;
+    color:#3ACC4C;
+    word-wrap:break-word;
+}
+.distance {
+    color:grey;
+    font-size:0.75em;
+    display:inline-block;
+}
+.lock {
+    color:black;
+    position:absolute;
+    height:100%;
+    top:0;
+    right:0;
+}
+.enterPass {
+    width:80%;
+    padding:0.25em;
+    color:#3ACC4C;
+    margin-top:25px;
+}
+.enterPass:focus {
+    outline:none;
+    border:solid #3ACC4C 1px;
+}
+
+.bubblingG {
+    text-align: center;
+    width:300px;
+    height:188px;
+}
+
+.bubblingG span {
+    display: inline-block;
+    vertical-align: middle;
+    width: 38px;
+    height: 38px;
+    margin: 94px auto;
+    background: #3ACC4C;
+    -moz-border-radius: 188px;
+    -moz-animation: bubblingG 0.9s infinite alternate;
+    -webkit-border-radius: 188px;
+    -webkit-animation: bubblingG 0.9s infinite alternate;
+    -ms-border-radius: 188px;
+    -ms-animation: bubblingG 0.9s infinite alternate;
+    -o-border-radius: 188px;
+    -o-animation: bubblingG 0.9s infinite alternate;
+    border-radius: 188px;
+    animation: bubblingG 0.9s infinite alternate;
+}
+
+#bubblingG_1 {
+    -moz-animation-delay: 0s;
+    -webkit-animation-delay: 0s;
+    -ms-animation-delay: 0s;
+    -o-animation-delay: 0s;
+    animation-delay: 0s;
+}
+
+#bubblingG_2 {
+    -moz-animation-delay: 0.27s;
+    -webkit-animation-delay: 0.27s;
+    -ms-animation-delay: 0.27s;
+    -o-animation-delay: 0.27s;
+    animation-delay: 0.27s;
+}
+
+#bubblingG_3 {
+    -moz-animation-delay: 0.54s;
+    -webkit-animation-delay: 0.54s;
+    -ms-animation-delay: 0.54s;
+    -o-animation-delay: 0.54s;
+    animation-delay: 0.54s;
+}
+
+@-moz-keyframes bubblingG {
+    0% {
+        width: 38px;
+        height: 38px;
+        background-color:#3ACC4C;
+        -moz-transform: translateY(0);
+    }
+
+    100% {
+        width: 90px;
+        height: 90px;
+        background-color:black;
+        -moz-transform: translateY(-79px);
+    }
+}
+
+@-webkit-keyframes bubblingG {
+    0% {
+        width: 38px;
+        height: 38px;
+        background-color:#3ACC4C;
+        -webkit-transform: translateY(0);
+    }
+
+    100% {
+        width: 90px;
+        height: 90px;
+        background-color:black;
+        -webkit-transform: translateY(-79px);
+    }
+}
+
+@-ms-keyframes bubblingG {
+    0% {
+        width: 38px;
+        height: 38px;
+        background-color:#3ACC4C;
+        -ms-transform: translateY(0);
+    }
+
+    100% {
+        width: 90px;
+        height: 90px;
+        background-color:black;
+        -ms-transform: translateY(-79px);
+    }
+}
+
+@-o-keyframes bubblingG {
+    0% {
+        width: 38px;
+        height: 38px;
+        background-color:#3ACC4C;
+        -o-transform: translateY(0);
+    }
+    100% {
+        width: 90px;
+        height: 90px;
+        background-color:black;
+        -o-transform: translateY(-79px);
+    }
+}
+
+@keyframes bubblingG {
+    0% {
+        width: 38px;
+        height: 38px;
+        background-color:#3ACC4C;
+        transform: translateY(0);
+    }
+    100% {
+        width: 90px;
+        height: 90px;
+        background-color:black;
+        transform: translateY(-79px);
+    }
+}
+

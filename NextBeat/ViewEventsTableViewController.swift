@@ -9,6 +9,8 @@
 import UIKit
 
 class ViewEventsTableViewController: UITableViewController {
+    
+   
 
     var timelineData:NSMutableArray! = NSMutableArray()
     var userlocation: PFGeoPoint?
@@ -27,7 +29,6 @@ class ViewEventsTableViewController: UITableViewController {
             (point:PFGeoPoint!, error:NSError!) -> Void in
             if point != nil {
                             // Succeeding in getting current location
-                println("fuck")
                 self.userlocation = point
             }
             else {
@@ -35,22 +36,26 @@ class ViewEventsTableViewController: UITableViewController {
                 println("Failed to get current location") // never printed
             }
         }
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+            refreshControl = UIRefreshControl()
+            //refreshControl!.attributedTitle = NSAttributedString(string: "Pull to refresh")
+            refreshControl!.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
+            tableView.addSubview(refreshControl!)
+            
+    }
+   
+    func refresh(sender:AnyObject?) {
+        loadData()
+        refreshControl!.endRefreshing()
     }
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    @IBAction func loadData(){
+    func loadData(){
         timelineData.removeAllObjects()
         
-        var findTimelineData:PFQuery = PFQuery(className: "Events")
+        var findTimelineData:PFQuery = PFQuery(className: "NewEvent")
         findTimelineData.whereKey("eventlocation", nearGeoPoint: userlocation, withinMiles:1.0)
         findTimelineData.findObjectsInBackgroundWithBlock{
             (objects:[AnyObject]!, error:NSError!)->Void in
@@ -59,7 +64,7 @@ class ViewEventsTableViewController: UITableViewController {
                 for object in objects{
                     let event:PFObject = object as PFObject
                     self.timelineData.addObject(event)
-                }
+                                    }
 
                 self.tableView.reloadData()
                 
@@ -69,7 +74,13 @@ class ViewEventsTableViewController: UITableViewController {
     }
     
     override func viewDidAppear(animated: Bool) {
-        self.loadData()
+        if (self.userlocation == nil) {
+            viewDidLoad()
+        }else
+        {
+            self.loadData()
+        }
+        
     }
     
 
@@ -101,9 +112,9 @@ class ViewEventsTableViewController: UITableViewController {
         cell.EventDescription.alpha = 0
         
         
-        cell.EventDescription.text = event.objectForKey("eventdescription") as String
-        cell.EventName.text = event.objectForKey("eventname") as AnyObject! as? String
-        
+        cell.EventDescription.text = event.objectForKey("details") as String
+        cell.EventName.text = event.objectForKey("name") as AnyObject! as? String
+        cell.ObjectID.text = event.objectForKey("objectId") as? String
                 
         UIView.animateWithDuration(0.5, animations: {
             cell.EventName.alpha = 1
@@ -113,42 +124,6 @@ class ViewEventsTableViewController: UITableViewController {
         return cell
     }
    
-
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 
     
     // MARK: - Navigation
@@ -160,8 +135,10 @@ class ViewEventsTableViewController: UITableViewController {
         {
             let cell = sender as EventsTableViewCell
             let eventname = cell.EventName.text
+            let hiddenId = cell.ObjectID.text
             var destinationViewController:ViewSongsTableViewController = segue.destinationViewController as ViewSongsTableViewController
             destinationViewController.eventname = eventname
+            destinationViewController.hiddenId = hiddenId
         }
         
             

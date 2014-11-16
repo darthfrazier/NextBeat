@@ -15,6 +15,7 @@ class SongTableViewCell: UITableViewCell {
     @IBOutlet weak var DownVote: UIButton!
     @IBOutlet weak var UpVote: UIButton!
     
+    @IBOutlet weak var SongId: UILabel!
     
     
     override func awakeFromNib() {

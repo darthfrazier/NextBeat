@@ -14,7 +14,8 @@ class NewSongViewController: UIViewController {
     @IBOutlet weak var Artist: UITextField!
     
     var eventname: String?
-
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -30,21 +31,31 @@ class NewSongViewController: UIViewController {
     }
     
     @IBAction func Submit(sender: AnyObject) {
-        var song:PFObject = PFObject(className: "Songs")
-        song["songtitle"] = SongTitle.text
-        song["event"] = eventname
+        var song:PFObject = PFObject(className: "NewPost")
+        song["songName"] = SongTitle.text
+        song["eventName"] = eventname
         if (Artist.text.isEmpty == false) {
-            song["artistname"] = Artist.text
+            song["artistName"] = Artist.text
         }
         else {
-            song["artistname"] = "null"
+            song["artistName"] = "null"
         }
         
         song.saveInBackground()
-        
-    self.navigationController?.popToRootViewControllerAnimated(true)
-        
+
+    
+        self.navigationController?.popViewControllerAnimated(true)
     }
+
+    /*func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true;
+    }*/
+    
+    override func touchesBegan(touches:NSSet, withEvent event: UIEvent) {
+        self.view.endEditing(true)
+    }
+
     
     
 

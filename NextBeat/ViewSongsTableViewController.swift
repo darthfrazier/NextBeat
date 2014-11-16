@@ -10,19 +10,24 @@ import UIKit
 
 class ViewSongsTableViewController: UITableViewController {
 
-    @IBOutlet weak var LabelTest: UILabel!
+    
     var timelineData:NSMutableArray! = NSMutableArray()
     var eventname: String?
+    var hiddenId: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        println(eventname)
+        refreshControl = UIRefreshControl()
+        refreshControl!.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
+        tableView.addSubview(refreshControl!)
     }
+    
+    func refresh(sender:AnyObject?) {
+        loadData()
+        refreshControl!.endRefreshing()
+    }
+
 
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -31,8 +36,8 @@ class ViewSongsTableViewController: UITableViewController {
     func loadData(){
         timelineData.removeAllObjects()
         
-        var findTimelineData:PFQuery = PFQuery(className: "Songs")
-        findTimelineData.whereKey("event", equalTo:eventname)
+        var findTimelineData:PFQuery = PFQuery(className: "NewPost")
+        findTimelineData.whereKey("eventName", equalTo:eventname)
         findTimelineData.findObjectsInBackgroundWithBlock{(objects:[AnyObject]!, error:NSError!)->Void in
             
             if error == nil{
@@ -40,9 +45,6 @@ class ViewSongsTableViewController: UITableViewController {
                     let song:PFObject = object as PFObject
                     self.timelineData.addObject(song)
                 }
-                
-                let array:NSArray = self.timelineData.reverseObjectEnumerator().allObjects
-                self.timelineData = NSMutableArray(array: array)
                 
                 self.tableView.reloadData()
             }
@@ -83,25 +85,26 @@ class ViewSongsTableViewController: UITableViewController {
         
         let song:PFObject = self.timelineData.objectAtIndex(indexPath.row) as PFObject
         
-       cell.SongTitle.alpha = 0
+        cell.SongTitle.alpha = 0
         cell.ArtistName.alpha = 0
         cell.VoteCount.alpha = 0
         cell.DownVote.alpha = 0
         cell.UpVote.alpha = 0
         
-        cell.SongTitle.text = song.objectForKey("songtitle") as? String
-        if (song.objectForKey("artistname") as NSString != "null") {
-            cell.ArtistName.text = song.objectForKey("artistname") as AnyObject! as? String
+        cell.SongTitle.text = song.objectForKey("songName") as? String
+        if (song.objectForKey("artistName") as NSString != "null") {
+            cell.ArtistName.text = song.objectForKey("artistName") as AnyObject! as? String
         }
     var test: Int
-    if (song.objectForKey("votescore") != nil) {
-        test = song.objectForKey("votescore") as Int
+    if (song.objectForKey("numVotes") != nil) {
+        test = song.objectForKey("numVotes") as Int
     } else {
         test = 0
     }
     
     
     cell.VoteCount.text = String(test)
+    cell.SongId.text = song.objectForKey("objectId") as? String
         UIView.animateWithDuration(0.2, animations: {
             
             cell.SongTitle.alpha = 1
@@ -114,14 +117,13 @@ class ViewSongsTableViewController: UITableViewController {
         return cell
 
     }
-   /* @IBAction func UpVote(sender: AnyObject) {
+   @IBAction func UpVote(sender: AnyObject) {
         var UpVote:PFQuery = PFQuery(className: "Songs")
         let cell = sender as SongTableViewCell
         var songname = cell.SongTitle.text
         var findTimelineData:PFQuery = PFQuery(className: "Songs")
         UpVote.whereKey("songtitle", equalTo:songname)
         UpVote.getObjectWithId
-            
             if error == nil{
                 for object in objects{
                     let song:PFObject = object as PFObject
@@ -168,10 +170,13 @@ class ViewSongsTableViewController: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using [segue destinationViewController].
         // Pass the selected object to the new view controller.
-        if segue.identifier == "NewSongs"
+        if segue.identifier == "NewSong"
         {
+            let cell = sender as SongTableViewCell
+            let hiddenId = cell.SongId.text
             var destinationViewController:NewSongViewController = segue.destinationViewController as NewSongViewController
-            destinationViewController.eventname = eventname
+            destinationViewController.eventname = eventname?
+            destinationViewController.hiddenId = hiddenId
         }
 
     

@@ -12,30 +12,38 @@ class NewEventViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var EventName: UITextField!
     @IBOutlet weak var AdminPassword: UITextField!
-    @IBOutlet weak var EventDescription: UITextField!
     @IBOutlet weak var EventPassword: UITextField!
+    @IBOutlet weak var EventDescription: UITextView!
     
     //EventName.delegate = self
     //AdminPassword.delegate = self
     
-    
-
     let locationManger:CLLocationManager = CLLocationManager()
     var userlocation:PFGeoPoint?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        EventName.borderStyle = UITextBorderStyle.RoundedRect
+        AdminPassword.borderStyle = UITextBorderStyle.RoundedRect
+        EventPassword.borderStyle = UITextBorderStyle.RoundedRect
+        EventDescription.layer.cornerRadius = 5
+        EventDescription.clipsToBounds = true
+        
+        /*EventName.becomeFirstResponder()
+        AdminPassword.becomeFirstResponder()
+        EventPassword.becomeFirstResponder()
+        EventDescription.becomeFirstResponder()*/
+        
         locationManger.desiredAccuracy = kCLLocationAccuracyBest
         let authstate = CLLocationManager.authorizationStatus()
         if(authstate == CLAuthorizationStatus.NotDetermined){
-            println("Not Authorised")
+            println("Not Authorized")
             locationManger.requestWhenInUseAuthorization()
         }
         PFGeoPoint.geoPointForCurrentLocationInBackground() {
             (point:PFGeoPoint!, error:NSError!) -> Void in
             if point != nil {
                             // Succeeding in getting current location
-                println("fuck")
                 self.userlocation = point
             }
             else {
@@ -56,28 +64,29 @@ class NewEventViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func CreateEvent(sender: AnyObject) {
-        var event:PFObject = PFObject(className: "Events")
-        event["eventname"] = EventName.text
+        var event:PFObject = PFObject(className: "NewEvent")
+        event["name"] = EventName.text
+        
         event["adminpassword"] = AdminPassword.text
-        event["eventdescription"] = EventDescription.text
+        event["details"] = EventDescription.text
         event["userID"] = UIDevice.currentDevice().identifierForVendor.UUIDString
         event["eventlocation"] = userlocation
 
         if (EventPassword.text.isEmpty == false) {
-            event["eventpassword"] = EventPassword.text
+            event["eventPass"] = EventPassword.text
         }
         else {
-            event["eventpassword"] = "null"
+            event["eventPass"] = "null"
         }
         event.saveInBackground()
         
         self.navigationController?.popToRootViewControllerAnimated(true)
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    /*func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true;
-    }
+    }*/
     
     override func touchesBegan(touches:NSSet, withEvent event: UIEvent) {
         self.view.endEditing(true)
